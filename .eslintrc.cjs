@@ -1,84 +1,71 @@
-/**
- * This is intended to be a basic starting point for linting in your app.
- * It relies on recommended configs out of the box for simplicity, but you can
- * and should modify this configuration to best suit your team's needs.
- */
-
-/** @type {import('eslint').Linter.Config} */
+/** @type {import('@types/eslint').Linter.Config} */
 module.exports = {
-  root: true,
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-  env: {
-    browser: true,
-    commonjs: true,
-    es6: true,
-  },
-  ignorePatterns: ["!**/.server", "!**/.client"],
-
-  // Base config
-  extends: ["eslint:recommended"],
-
-  overrides: [
-    // React
-    {
-      files: ["**/*.{js,jsx,ts,tsx}"],
-      plugins: ["react", "jsx-a11y"],
-      extends: [
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:react-hooks/recommended",
-        "plugin:jsx-a11y/recommended",
-      ],
-      settings: {
-        react: {
-          version: "detect",
-        },
-        formComponents: ["Form"],
-        linkComponents: [
-          { name: "Link", linkAttribute: "to" },
-          { name: "NavLink", linkAttribute: "to" },
-        ],
-        "import/resolver": {
-          typescript: {},
-        },
-      },
-    },
-
-    // Typescript
-    {
-      files: ["**/*.{ts,tsx}"],
-      plugins: ["@typescript-eslint", "import"],
-      parser: "@typescript-eslint/parser",
-      settings: {
-        "import/internal-regex": "^~/",
-        "import/resolver": {
-          node: {
-            extensions: [".ts", ".tsx"],
-          },
-          typescript: {
-            alwaysTryTypes: true,
-          },
-        },
-      },
-      extends: [
-        "plugin:@typescript-eslint/recommended",
-        "plugin:import/recommended",
-        "plugin:import/typescript",
-      ],
-    },
-
-    // Node
-    {
-      files: [".eslintrc.cjs"],
-      env: {
-        node: true,
-      },
-    },
+  extends: [
+    '@remix-run/eslint-config',
+    '@remix-run/eslint-config/node',
+    'eslint-config-prettier',
+    'plugin:deprecation/recommended',
   ],
-};
+  rules: {
+	  //eslint common rules
+    indent: ['error', 2],
+    curly: 'error',
+    'prefer-const': 'error',
+    'prefer-destructuring': 'error',
+    'no-console': 'error',
+    'no-nested-ternary': 'error',
+    'prefer-template': 'error',
+    'no-debugger': 'error',
+    'no-new-wrappers': 'error',
+    'object-shorthand': 'error',
+    'max-len': ['error', { code: 180 }],
+    'no-return-await': 'error',
+    'consistent-return': 'error',
+    'no-unused-vars': 'off',
+    'no-unneeded-ternary': 'error',
+    'no-implicit-coercion': 'error',
+    'lines-between-class-members': ['error', 'always'],
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: '*', next: 'return' },
+      { blankLine: 'always', prev: '*', next: 'case' },
+      { blankLine: 'always', prev: '*', next: 'default' },
+      { blankLine: 'always', prev: '*', next: 'export' },
+      { blankLine: 'always', prev: '*', next: 'function' },
+    ],
+    //prettier rules
+    // 'prettier/prettier': 'error',
+
+    //typescript-eslint rules
+    '@typescript-eslint/consistent-type-imports': 'error',
+    '@typescript-eslint/no-non-null-assertion': 'error',
+    '@typescript-eslint/no-inferrable-types': 'error',
+    '@typescript-eslint/ban-types': 'error',
+    // '@typescript-eslint/prefer-readonly': 'error',
+    // '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+    // '@typescript-eslint/await-thenable': 'error',
+    '@typescript-eslint/prefer-for-of': 'error',
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+
+    //vitest rules
+    'vitest/valid-expect': ['error'],
+    'vitest/no-conditional-in-test': ['error'],
+    'vitest/no-conditional-expect': ['error'],
+    'vitest/no-conditional-tests': ['error'],
+    'vitest/valid-title': ['error'],
+    'vitest/prefer-to-have-length': ['error'],
+    'vitest/prefer-each': ['error'],
+    'vitest/no-identical-title': ['error'],
+    'vitest/no-disabled-tests': ['error'],
+    //react rules
+    'react/jsx-boolean-value': 'error',
+    'react/no-children-prop': 'error',
+    'react/self-closing-comp': 'error',
+  },
+  plugins: [
+    // 'eslint-plugin-prettier',
+    'react',
+    'vitest',
+    'deprecation',
+  ],
+}
