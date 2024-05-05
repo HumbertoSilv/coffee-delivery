@@ -1,29 +1,46 @@
+import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
+} from '@remix-run/react';
+import stylesheet from "~/tailwind.css?url";
+
+import Header from './components/header';
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: stylesheet },
+  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous"},
+  { rel: "preconnect", href: "https://fonts.googleapis.com", crossOrigin: "anonymous"},
+  // eslint-disable-next-line max-len
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap", crossOrigin: "anonymous"},
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="antialiased">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
+      {/* background */}
       <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        {/* width: 80%; */}
+        <div className="min-h-screen font-body text-zinc-700">
+          <Header />
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </div>
       </body>
     </html>
-  );
+  )
 }
 
 export default function App() {
-  return <Outlet />;
+  return <Outlet />
 }
