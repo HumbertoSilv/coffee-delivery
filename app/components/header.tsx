@@ -1,5 +1,8 @@
-import { MapPin, ShoppingCart } from '@phosphor-icons/react'
+import { MapPin } from '@phosphor-icons/react'
+import Cart from './cart'
 import Logo from "./logo"
+
+
 
 export default function Header() {
   return (
@@ -11,9 +14,7 @@ export default function Header() {
           <MapPin size={18} weight="fill" />
           Porto Alegre, RS
         </div>
-        <div className="bg-amber-100 p-2 rounded-md">
-          <ShoppingCart className="text-amber-600" size={18} weight="fill" />
-        </div>
+        <Cart />
       </aside>
     </header>
   )

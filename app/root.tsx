@@ -8,7 +8,13 @@ import {
 } from '@remix-run/react';
 import stylesheet from "~/tailwind.css?url";
 
+import { ChakraProvider } from '@chakra-ui/react';
+import { withEmotionCache } from '@emotion/react';
+
 import Header from './components/header';
+
+import { useContext, useEffect } from "react";
+import { ClientStyleContext, ServerStyleContext } from './context';
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -18,29 +24,65 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap", crossOrigin: "anonymous"},
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="antialiased">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      {/* background */}
-      <body>
-        {/* width: 80%; */}
-        <div className="min-h-screen font-body text-zinc-700">
-          <Header />
-          {children}
-          <ScrollRestoration />
-          <Scripts />
-        </div>
-      </body>
-    </html>
-  )
+interface DocumentProps {
+  children: React.ReactNode;
 }
 
+const Document = withEmotionCache(
+  ({ children }: DocumentProps, emotionCache) => {
+    const serverStyleData = useContext(ServerStyleContext);
+    const clientStyleData = useContext(ClientStyleContext);
+
+    // Only executed on client
+    useEffect(() => {
+      // re-link sheet container
+      emotionCache.sheet.container = document.head;
+      // re-inject tags
+      const {tags} = emotionCache.sheet;
+      emotionCache.sheet.flush();
+      tags.forEach((tag) => {
+        (emotionCache.sheet as any)._insertTag(tag);
+      });
+      // reset cache to reapply global styles
+      clientStyleData?.reset();
+    }, []);
+
+    return (
+      <html lang="en" className="antialiased">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <Meta />
+          <Links />
+          {serverStyleData?.map(({ key, ids, css }) => (
+            <style
+              key={key}
+              data-emotion={`${key} ${ids.join(' ')}`}
+              dangerouslySetInnerHTML={{ __html: css }}
+            />
+          ))}
+        </head>
+        <body>
+          <div className="min-h-screen font-body text-zinc-700">
+            {children}
+            <ScrollRestoration />
+            <Scripts />
+          </div>
+          {/* <LiveReload /> */}
+        </body>
+      </html>
+    );
+  }
+);
+
 export default function App() {
-  return <Outlet />
+  return (
+    <Document>
+      <ChakraProvider>
+        <Header />
+        <Outlet />
+      </ChakraProvider>
+    </Document>
+
+  )
 }
