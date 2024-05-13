@@ -63,7 +63,7 @@ const Document = withEmotionCache(
           ))}
         </head>
         <body>
-          <div className="min-h-screen font-body text-zinc-700">
+          <div className="min-h-screen font-body text-zinc-700 bg-main">
             {children}
             <ScrollRestoration />
             <Scripts />
@@ -79,8 +79,10 @@ export default function App() {
   return (
     <Document>
       <ChakraProvider>
-        <Header />
-        <Outlet />
+        <div className="p-4 sm:p-12 max-w-screen-xl 2xl:m-auto">
+          <Header />
+          <Outlet />
+        </div>
       </ChakraProvider>
     </Document>
 
