@@ -19,18 +19,19 @@ export default function Cart() {
   return (
     <>
       <button ref={btnRef} onClick={onOpen} className="bg-amber-100 p-2 rounded-md">
-        <ShoppingCart className="text-amber-600" size={18} weight="fill" />
+        <ShoppingCart className="text-amber-600" size={22} weight="fill" />
       </button>
       <Drawer
         isOpen={isOpen}
         placement='right'
+        size="sm"
         onClose={onClose}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader className="bg-gray-100 border-b-zinc-200 border-b-[1px] font-body">
+          <DrawerHeader fontWeight="bold" className="bg-gray-100 border-b-zinc-200 border font-title">
             Cafés selecionados
           </DrawerHeader>
 
@@ -51,13 +52,13 @@ export default function Cart() {
                 <span className="text-base">R$ 3,50</span>
               </div>
 
-              <div className="text-lg font-bold">
+              <div className="text-xl font-bold">
                 <span>Total</span>
                 <span>R$ 33,20</span>
               </div>
             </div>
 
-            <button className="bg-amber-500 text-slate-50 text-sm font-bold rounded-md py-2 w-full uppercase">
+            <button className="bg-amber-500 text-slate-50 text-sm font-bold rounded-md py-3 mb-2 w-full uppercase">
               confirmar pedido
             </button>
           </DrawerFooter>

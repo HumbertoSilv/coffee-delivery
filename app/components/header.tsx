@@ -6,12 +6,12 @@ import Logo from "./logo"
 
 export default function Header() {
   return (
-    <header className="flex justify-between p-4">
+    <header className="flex justify-between pb-3">
       <Logo />
 
       <aside className="flex justify-between gap-2">
-        <div className="flex bg-violet-100 rounded-md p-2 gap-1 text-violet-800 text-xs items-center">
-          <MapPin size={18} weight="fill" />
+        <div className="flex bg-violet-100 rounded-md p-2 gap-1 text-violet-800 text-sm items-center">
+          <MapPin size={22} weight="fill" />
           Porto Alegre, RS
         </div>
         <Cart />
