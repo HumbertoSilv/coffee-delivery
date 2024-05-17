@@ -2,7 +2,7 @@ import { Minus, Plus, Trash } from "@phosphor-icons/react";
 
 export default function Coffee() {
   return (
-    <div className="grid grid-cols-[56px_2fr_1fr] pb-2 pt-6 border-b-zinc-200 border-b-[1px] gap-3">
+    <div className="grid grid-cols-[56px_2fr_1fr] py-6 border-b-zinc-200 border-b-[1px] gap-3">
       <img src="/images/Type=Latte.png" alt="Latte" width="56px" height="56px"/>
 
       <div>
@@ -18,8 +18,9 @@ export default function Coffee() {
             </button>
           </div>
 
-          <button className="flex justify-center bg-zinc-200 rounded-md py-1.5 px-4">
+          <button className="flex justify-center bg-zinc-200 rounded-md py-1.5 px-4 uppercase text-xs gap-1">
             <Trash size={15} className="text-violet-500" />
+            remover
           </button>
         </div>
       </div>

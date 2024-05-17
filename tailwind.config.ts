@@ -12,7 +12,7 @@ export default {
         body: ['"Roboto"', "sans-serif"],
       },
       fontSize: {
-        min: '0.5rem',
+        min: '0.625rem',
         titleL: '2rem'
       }
     },

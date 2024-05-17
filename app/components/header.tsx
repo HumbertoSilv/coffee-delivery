@@ -6,7 +6,7 @@ import Logo from "./logo"
 
 export default function Header() {
   return (
-    <header className="flex justify-between">
+    <header className="flex justify-between pb-3">
       <Logo />
 
       <aside className="flex justify-between gap-2">

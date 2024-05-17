@@ -79,7 +79,7 @@ export default function App() {
   return (
     <Document>
       <ChakraProvider>
-        <div className="p-4 sm:p-12 max-w-screen-xl 2xl:m-auto">
+        <div className="p-4 sm:p-12 max-w-[1160px] xl:m-auto">
           <Header />
           <Outlet />
         </div>
