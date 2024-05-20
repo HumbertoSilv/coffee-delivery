@@ -1,4 +1,5 @@
-import { Minus, Plus, Trash } from "@phosphor-icons/react";
+import { Trash } from "@phosphor-icons/react";
+import * as Control from "./ui/control";
 
 export default function Coffee() {
   return (
@@ -7,27 +8,20 @@ export default function Coffee() {
 
       <div>
         <h3 className="pb-2 max-w-36 sm:max-w-none truncate">Expresso Tradicional</h3>
-        <div className="grid grid-cols-[2fr_1fr] gap-4">
-          <div className="flex justify-evenly bg-zinc-200 rounded-md text-xs py-1.5 px-2 gap-1 text-violet-500">
-            <button >
-              <Minus size={10} />
-            </button>
-            <span className="text-zinc-700">2</span>
-            <button >
-              <Plus size={10} />
-            </button>
-          </div>
 
-          <button className="flex justify-center bg-zinc-200 rounded-md py-1.5 px-4 uppercase text-xs gap-1">
+        <Control.Container>
+          <Control.QuantityInput quantity={2} />
+
+          <Control.Button variant="tertiary" className="py-2 px-4 text-xs">
             <Trash size={15} className="text-violet-500" />
-            remover
-          </button>
-        </div>
+            <p className="hidden sm:block">remover</p>
+          </Control.Button>
+        </Control.Container>
       </div>
 
-      <div className="grid justify-self-end font-bold font-title text-zinc-600">
-        <span>R$9,90</span>
-      </div>
+      <Control.Container className="justify-self-end">
+        <Control.Price price={9.90} />
+      </Control.Container>
     </div>
   )
 }

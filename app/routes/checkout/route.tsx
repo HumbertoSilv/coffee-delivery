@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import { CreditCard, CurrencyDollar, MapPinLine, Money, PixLogo } from "@phosphor-icons/react";
 import Coffee from "../../components/coffee";
+import { Total } from "../../components/total";
+import { Button } from "../../components/ui/control";
 
 export default function Checkout() {
   return (
@@ -62,32 +64,21 @@ export default function Checkout() {
         <div className="flex flex-col gap-4 py-12 h-full">
           <h2 className="font-black text-xl font-title">Seu pedido</h2>
 
-          <div className="flex flex-col justify-between gap-8 bg-stone-100 rounded-tl-md rounded-br-md rounded-tr-[50px] rounded-bl-[50px] p-8 h-full">
+          <div className="flex flex-col justify-between gap-8 bg-stone-100 rounded-tl-md rounded-br-md rounded-tr-[50px] rounded-bl-[50px] p-8 h-full max-w-[450px]">
             <div className="font-body overflow-auto max-h-80">
+              <Coffee />
+              <Coffee />
+              <Coffee />
+              <Coffee />
               <Coffee />
             </div>
 
             <div>
-              <div className="flex flex-col gap-1 py-4 *:flex *:items-center *:justify-between">
-                <div>
-                  <span className="text-sm">Total de itens</span>
-                  <span className="text-base">R$ 29,70</span>
-                </div>
+              <Total />
 
-                <div>
-                  <span className="text-sm">Entrega</span>
-                  <span className="text-base">R$ 3,50</span>
-                </div>
-
-                <div className="text-xl font-bold">
-                  <span>Total</span>
-                  <span>R$ 33,20</span>
-                </div>
-              </div>
-
-              <button className="bg-yellow-500 text-slate-50 text-sm font-black rounded-md py-3.5 mb-2 w-full uppercase">
+              <Button className="bg-yellow-500 text-slate-50 font-bold py-3 w-full">
                 finalizar pedido
-              </button>
+              </Button>
             </div>
           </div>
         </div>

@@ -1,45 +1,45 @@
-import { Minus, Plus, ShoppingCart } from "@phosphor-icons/react";
+import { ShoppingCart } from "@phosphor-icons/react";
+import * as Control from "./ui/control";
 
-export default function Card() {
+interface CardProps {
+  id: string
+  title: string
+  description: string
+  tags: Array<string>,
+  price: number,
+  image: string
+}
+
+export default function Card({ id, title, description, price, tags, image } : CardProps) {
+  
   return (
-    <div className="bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 text-center max-w-64">
+    <div className="justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 text-center max-w-64">
       <img 
         className="mt-[-25px] self-center w-[100px] h-[100px] sm:w-[120px] sm:h-[120px]"
-        src="/images/Type=Latte.png"
-        alt="Latte"
+        src={image}
+        alt={title}
       />
 
       <div className="flex items-center self-center gap-1 mt-3">
-        <span className="py-1 px-2 rounded-full bg-amber-100 text-yellow-600 uppercase font-extrabold text-[8px] sm:text-min">tradicional</span>
-        <span className="py-1 px-2 rounded-full bg-amber-100 text-yellow-600 uppercase font-extrabold text-[8px] sm:text-min">com leite</span>
+        {tags.map(tag => {
+          return (
+            <span key={id} className="py-1 px-2 rounded-full bg-amber-100 text-yellow-600 uppercase font-extrabold text-[8px] sm:text-min">{tag}</span>
+          )
+        })}
       </div>
 
-      <h3 className="font-extrabold pt-3 py-3 text-sm sm:text-xl font-title">Expresso Tradicional</h3>
+      <h3 className="font-extrabold pt-3 py-3 text-sm sm:text-xl font-title">{title}</h3>
 
-      <span className="text-zinc-500 text-center text-xs sm:text-sm">O tradicional café feito com água quente e grãos moídos</span>
+      <span className="text-zinc-500 text-center text-xs sm:text-sm">{description}</span>
 
       <div className="flex items-center justify-around py-5">
-        <div>
-          <span className="text-min px-[2px]">R$</span>
-          <span className="font-black text-base sm:text-2xl font-title">19,90</span>
-        </div>
-
-        <div className="flex gap-1">
-          <div className="flex items-center bg-zinc-200 rounded-md text-xs py-1 px-2 gap-1 text-violet-800 sm:gap-3">
-            <button >
-              <Minus weight="bold" className="w-2.5 h-2.5 sm:w-4 sm:h-4" />
-            </button>
-            <span className="text-zinc-700 sm:text-base">2</span>
-            <button >
-              <Plus weight="bold" className="w-2.5 h-2.5 sm:w-4 sm:h-4" />
-            </button>
-          </div>
-
-          <button className="bg-violet-800 text-slate-50 p-1 rounded-md">
-            <ShoppingCart weight="fill" className="w-4 sm:w-6" />
-          </button>
-        </div>
-
+        <Control.Price price={price} />
+        <Control.Container>
+          <Control.QuantityInput quantity={2} />
+          <Control.Button>
+            <ShoppingCart weight="fill" className="w-4 sm:w-6 sm:h-5 text-slate-50" />
+          </Control.Button>
+        </Control.Container>
       </div>
     </div>
   )

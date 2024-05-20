@@ -11,6 +11,8 @@ import {
 import { ShoppingCart } from '@phosphor-icons/react'
 import { useRef } from 'react'
 import Coffee from './coffee'
+import { Total } from './total'
+import { Button } from './ui/control'
 
 export default function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -18,9 +20,10 @@ export default function Cart() {
 
   return (
     <>
-      <button ref={btnRef} onClick={onOpen} className="bg-amber-100 p-2 rounded-md">
+      <Button ref={btnRef} onClick={onOpen} variant="secondary" className="p-3">
         <ShoppingCart className="text-amber-600" size={22} weight="fill" />
-      </button>
+      </Button>
+
       <Drawer
         isOpen={isOpen}
         placement='right'
@@ -38,29 +41,15 @@ export default function Cart() {
           <DrawerBody className="bg-gray-100 font-body">
             <Coffee />
             <Coffee />
+            <Coffee />
           </DrawerBody>
 
           <DrawerFooter display="block" className="bg-gray-100 font-body">
-            <div className="flex flex-col gap-1 py-4 *:flex *:items-center *:justify-between">
-              <div>
-                <span className="text-sm">Total de itens</span>
-                <span className="text-base">R$ 29,70</span>
-              </div>
+            <Total />
 
-              <div>
-                <span className="text-sm">Entrega</span>
-                <span className="text-base">R$ 3,50</span>
-              </div>
-
-              <div className="text-xl font-bold">
-                <span>Total</span>
-                <span>R$ 33,20</span>
-              </div>
-            </div>
-
-            <button className="bg-amber-500 text-slate-50 text-sm font-bold rounded-md py-3 mb-2 w-full uppercase">
+            <Button className="bg-yellow-500 text-slate-50 font-bold py-3 mb-2 w-full">
               confirmar pedido
-            </button>
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
