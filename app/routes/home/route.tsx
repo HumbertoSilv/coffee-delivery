@@ -1,8 +1,27 @@
-/* eslint-disable max-len */
 import { Coffee, Package, ShoppingCart, Timer } from "@phosphor-icons/react";
+import { useLoaderData } from "@remix-run/react";
 import Card from "../../components/card";
+import { api } from "../../utils/api";
+
+interface Product {
+  id: string
+  title: string
+  description: string
+  tags: Array<string>,
+  price: number,
+  image: string
+}
+
+export async function loader() {
+  const response = await api('/products')  
+  const data: Array<Product> = await response.json()
+
+  return data
+}
 
 export default function Home() {
+  const products = useLoaderData<typeof loader>()
+
   return (
     <div>
       <div className="lg:flex lg:items-center lg:gap-4">
@@ -55,19 +74,17 @@ export default function Home() {
       <section >
         <h2 className="font-black text-3xl font-title">Nossos cafés</h2>
 
-        <div className="grid grid-cols-2 sm:flex sm:flex-wrap py-6 gap-3">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-evenly py-6 gap-3">
+          {products.map(product => {
+            return (
+              <Card key={product.id} {...product} />
+            )
+          })}
         </div>
       </section>
 
     </div>
   )
 }
+
+// TODO: skeleton
