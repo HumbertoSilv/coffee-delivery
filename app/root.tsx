@@ -15,6 +15,7 @@ import Header from './components/header';
 
 import { useContext, useEffect } from "react";
 import { ClientStyleContext, ServerStyleContext } from './context';
+import { CartProvider } from "./hooks/cart";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -63,7 +64,7 @@ const Document = withEmotionCache(
           ))}
         </head>
         <body>
-          <div className="min-h-screen font-body text-zinc-700 bg-main">
+          <div className="font-body text-zinc-700 bg-main">
             {children}
             <ScrollRestoration />
             <Scripts />
@@ -79,10 +80,12 @@ export default function App() {
   return (
     <Document>
       <ChakraProvider>
-        <div className="p-4 sm:p-12 max-w-[1160px] xl:m-auto">
-          <Header />
-          <Outlet />
-        </div>
+        <CartProvider>
+          <div className="p-4 sm:p-12 max-w-7xl m-auto shadow-xl min-h-screen">
+            <Header />
+            <Outlet />
+          </div>
+        </CartProvider>
       </ChakraProvider>
     </Document>
 
