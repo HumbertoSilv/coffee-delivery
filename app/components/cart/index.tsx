@@ -12,9 +12,9 @@ import { ShoppingCart } from '@phosphor-icons/react'
 import { useNavigate } from '@remix-run/react'
 import { useRef } from 'react'
 import { useCart } from '../../hooks/cart'
-import Coffee from '../product'
+import { Product } from '../product'
 import { Total } from '../total'
-import { Button } from './../ui/control'
+import { Button } from '../ui/button'
 
 export default function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -56,7 +56,7 @@ export default function Cart() {
           <DrawerBody className="bg-gray-100 font-body">
             {cart.map((item) => {
               return (
-                <Coffee key={item.product.id} {...item} />
+                <Product key={item.product.id} {...item} />
               )
             })}
           </DrawerBody>

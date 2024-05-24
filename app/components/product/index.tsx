@@ -3,6 +3,7 @@ import { useCart, type CartProduct } from "../../hooks/cart";
 import { formatPrice } from "../../utils/formatPrice";
 import * as Control from "../control";
 import { Price } from "../price";
+import { Button } from "../ui/button";
 
 export function Product({product, quantity}: CartProduct) {
   const { increaseItem, decreaseItem, removeFromCart } = useCart();
@@ -21,14 +22,14 @@ export function Product({product, quantity}: CartProduct) {
             decreaseItem={() => decreaseItem(product, 1)}
           />
 
-          <Control.Button
+          <Button
             variant="tertiary"
             className="py-2 px-4 text-xs"
             onClick={() => removeFromCart(product.id)}
           >
             <Trash size={15} className="text-violet-500" />
             <p className="hidden sm:block">remover</p>
-          </Control.Button>
+          </Button>
         </Control.Container>
       </div>
 

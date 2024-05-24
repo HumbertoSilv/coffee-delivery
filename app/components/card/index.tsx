@@ -4,6 +4,7 @@ import { useCart } from "../../hooks/cart";
 import { formatPrice } from "../../utils/formatPrice";
 import * as Control from "../control";
 import { Price } from "../price";
+import { Button } from "../ui/button";
 import { type ICardProps } from "./types";
 
 export default function Card({ id, title, description, price, tags, image } : ICardProps) {
@@ -51,12 +52,12 @@ export default function Card({ id, title, description, price, tags, image } : IC
             increaseItem={increase}
             decreaseItem={decrease} />
 
-          <Control.Button
+          <Button
             disabled={zeroItems}
             onClick={() => increaseItem({id, title, description, price, tags, image}, quantity)}
           >
             <ShoppingCart weight="fill" className="w-4 sm:w-6 sm:h-5 text-slate-50" />
-          </Control.Button>
+          </Button>
         </Control.Container>
       </div>
     </div>
