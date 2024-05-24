@@ -9,7 +9,7 @@ export interface Product {
   image: string
 }
 
-interface CartProduct {
+export interface CartProduct {
   product: Product
   quantity: number
 }
@@ -19,7 +19,7 @@ interface CartContextType {
   increaseItem: (product: Product, quantity: number) => void
   decreaseItem: (product: Product, quantity: number) => void
   removeFromCart: (productId: string) => void
-  totalPrice: () => number
+  totalProductsPrice: () => number
   hasAnyItem: () => boolean
 }
 
@@ -70,12 +70,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode}) => {
     setCart((state) => state.filter((item) => item.product.id !== productId))
   }
 
-  const totalPrice = () => cart.reduce((acc, item) => acc + (item.quantity * item.product.price), 0)
+  const totalProductsPrice = () => cart.reduce((acc, item) => acc + (item.quantity * item.product.price), 0)
 
   const hasAnyItem = () => cart.reduce((acc, item) => acc + item.quantity, 0) > 0
 
   return (
-    <CartContext.Provider value={{ cart, increaseItem, decreaseItem, removeFromCart, totalPrice, hasAnyItem }}>
+    <CartContext.Provider value={{ cart, increaseItem, decreaseItem, removeFromCart, totalProductsPrice, hasAnyItem }}>
       {children}
     </CartContext.Provider>
   )

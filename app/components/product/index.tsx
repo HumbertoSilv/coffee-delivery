@@ -1,9 +1,9 @@
 import { Trash } from "@phosphor-icons/react";
 import { useCart, type CartProduct } from "../../hooks/cart";
 import { formatPrice } from "../../utils/formatPrice";
-import * as Control from "../control";
 import { Price } from "../price";
 import { Button } from "../ui/button";
+import * as Control from "../ui/control";
 
 export function Product({product, quantity}: CartProduct) {
   const { increaseItem, decreaseItem, removeFromCart } = useCart();
