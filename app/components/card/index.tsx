@@ -1,7 +1,9 @@
 import { ShoppingCart } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useCart } from "../../hooks/cart";
-import * as Control from "./../ui/control";
+import { formatPrice } from "../../utils/formatPrice";
+import * as Control from "../control";
+import { Price } from "../price";
 import { type ICardProps } from "./types";
 
 export default function Card({ id, title, description, price, tags, image } : ICardProps) {
@@ -40,7 +42,9 @@ export default function Card({ id, title, description, price, tags, image } : IC
       <span className="text-zinc-500 text-center text-xs sm:text-sm">{description}</span>
 
       <div className="flex items-center justify-around py-5">
-        <Control.Price price={price} />
+        <Price>
+          {formatPrice(price)}
+        </Price>
         <Control.Container>
           <Control.QuantityInput
             quantity={quantity}

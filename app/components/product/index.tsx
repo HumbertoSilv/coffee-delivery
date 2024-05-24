@@ -1,8 +1,10 @@
 import { Trash } from "@phosphor-icons/react";
 import { useCart, type CartProduct } from "../../hooks/cart";
-import * as Control from "../ui/control";
+import { formatPrice } from "../../utils/formatPrice";
+import * as Control from "../control";
+import { Price } from "../price";
 
-export default function Product({product, quantity}: CartProduct) {
+export function Product({product, quantity}: CartProduct) {
   const { increaseItem, decreaseItem, removeFromCart } = useCart();
 
   return (
@@ -31,7 +33,9 @@ export default function Product({product, quantity}: CartProduct) {
       </div>
 
       <Control.Container className="justify-self-end">
-        <Control.Price price={product.price} />
+        <Price>
+          {formatPrice(product.price)}
+        </Price>
       </Control.Container>
     </div>
   )
