@@ -12,8 +12,8 @@ import { ShoppingCart } from '@phosphor-icons/react'
 import { useNavigate } from '@remix-run/react'
 import { useRef } from 'react'
 import { useCart } from '../../hooks/cart'
-import Coffee from './../coffee'
-import { Total } from './../total'
+import Coffee from '../product'
+import { Total } from '../total'
 import { Button } from './../ui/control'
 
 export default function Cart() {
