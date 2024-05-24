@@ -1,16 +1,23 @@
 import { ShoppingCart } from "@phosphor-icons/react";
-import * as Control from "./ui/control";
+import { useState } from "react";
+import { useCart } from "../../hooks/cart";
+import * as Control from "./../ui/control";
+import { type ICardProps } from "./types";
 
-interface CardProps {
-  id: string
-  title: string
-  description: string
-  tags: Array<string>,
-  price: number,
-  image: string
-}
+export default function Card({ id, title, description, price, tags, image } : ICardProps) {
+  const [quantity, setQuantity] = useState<number>(0)
+  const { increaseItem } = useCart();
 
-export default function Card({ id, title, description, price, tags, image } : CardProps) {
+  const zeroItems = quantity < 1
+
+  const increase = () => {
+    setQuantity((state) => state + 1)
+  }
+
+  const decrease = () => {
+    if (zeroItems) return
+    setQuantity((state) => state - 1)
+  }
   
   return (
     <div className="justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 text-center max-w-64">
@@ -35,8 +42,15 @@ export default function Card({ id, title, description, price, tags, image } : Ca
       <div className="flex items-center justify-around py-5">
         <Control.Price price={price} />
         <Control.Container>
-          <Control.QuantityInput quantity={2} />
-          <Control.Button>
+          <Control.QuantityInput
+            quantity={quantity}
+            increaseItem={increase}
+            decreaseItem={decrease} />
+
+          <Control.Button
+            disabled={zeroItems}
+            onClick={() => increaseItem({id, title, description, price, tags, image}, quantity)}
+          >
             <ShoppingCart weight="fill" className="w-4 sm:w-6 sm:h-5 text-slate-50" />
           </Control.Button>
         </Control.Container>
