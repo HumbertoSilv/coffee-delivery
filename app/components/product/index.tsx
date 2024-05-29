@@ -1,8 +1,11 @@
 import { Trash } from "@phosphor-icons/react";
 import { useCart, type CartProduct } from "../../hooks/cart";
+import { formatPrice } from "../../utils/formatPrice";
+import { Price } from "../price";
+import { Button } from "../ui/button";
 import * as Control from "../ui/control";
 
-export default function Product({product, quantity}: CartProduct) {
+export function Product({product, quantity}: CartProduct) {
   const { increaseItem, decreaseItem, removeFromCart } = useCart();
 
   return (
@@ -19,19 +22,21 @@ export default function Product({product, quantity}: CartProduct) {
             decreaseItem={() => decreaseItem(product, 1)}
           />
 
-          <Control.Button
+          <Button
             variant="tertiary"
             className="py-2 px-4 text-xs"
             onClick={() => removeFromCart(product.id)}
           >
             <Trash size={15} className="text-violet-500" />
             <p className="hidden sm:block">remover</p>
-          </Control.Button>
+          </Button>
         </Control.Container>
       </div>
 
       <Control.Container className="justify-self-end">
-        <Control.Price price={product.price} />
+        <Price>
+          {formatPrice(product.price)}
+        </Price>
       </Control.Container>
     </div>
   )

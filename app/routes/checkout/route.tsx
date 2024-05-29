@@ -1,10 +1,19 @@
 /* eslint-disable max-len */
 import { CreditCard, CurrencyDollar, MapPinLine, Money, PixLogo } from "@phosphor-icons/react";
-import Coffee from "../../components/coffee";
+import { useNavigate } from "@remix-run/react";
+import { Product } from "../../components/product";
 import { Total } from "../../components/total";
-import { Button } from "../../components/ui/control";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { useCart } from "../../hooks/cart";
 
 export default function Checkout() {
+  const { cart, totalProductsPrice, hasAnyItem } = useCart();
+  const navigate = useNavigate();
+
+  const productsPrice = totalProductsPrice()
+  const delivery = productsPrice * 0.1 // random value
+
   return (
     <div className="md:grid md:grid-cols-[55%_45%] gap-5">
       <div className="flex flex-col gap-4 py-12">
@@ -18,15 +27,17 @@ export default function Checkout() {
               <p className="text-sm">Informe o endereço onde deseja receber o pedido</p>
             </div>
           </div>
-        
-          <form className="grid gap-3 [grid-template:'zipCode_zipCode_._.''street_street_street_street''number_complement_complement_complement''neighborhood_neighborhood_city_code'/_25%_25%_25%_45px] *:p-3 *:rounded-md *:bg-stone-200/30 *:text-sm *:border *:border-stone-300">
-            <input type="text" className="[grid-area:zipCode]" placeholder="CEP" />
-            <input type="text" className="[grid-area:street]" placeholder="Rua" />
-            <input type="text" className="[grid-area:number]" placeholder="Número" />
-            <input type="text" className="[grid-area:complement]" placeholder="Complemento" />
-            <input type="text" className="[grid-area:neighborhood]" placeholder="Bairro" />
-            <input type="text" className="[grid-area:city]" placeholder="Cidade" />
-            <input type="text" className="[grid-area:code]" placeholder="UF" />
+
+          <form 
+            id="address"
+            className="grid gap-3 [grid-template:'zipCode_zipCode_._.''stt_stt_stt_stt''num_comp_comp_comp''neighborhood_neighborhood_city_code'/_25%_25%_25%_15%]">
+            <Input className="[grid-area:zipCode]" placeholder="CEP*" />
+            <Input className="[grid-area:stt]" placeholder="Rua*" />
+            <Input className="[grid-area:num]" placeholder="Número*" />
+            <Input className="[grid-area:comp]" placeholder="Complemento" isOptional />
+            <Input className="[grid-area:neighborhood]" placeholder="Bairro*" />
+            <Input className="[grid-area:city]" placeholder="Cidade*" />
+            <Input className="[grid-area:code]" placeholder="UF*" />
           </form>
         </div>
 
@@ -55,9 +66,12 @@ export default function Checkout() {
           </div>
         </div>
 
-        <button className="self-end bg-amber-500 text-slate-50 text-sm font-bold rounded-md py-2 w-1/2 uppercase md:hidden">
-          finalizar pedido
-        </button>
+        <Button
+          disabled={!hasAnyItem()}
+          onClick={() => navigate("/success")}
+          className="self-end bg-yellow-500 text-slate-50 font-bold py-3 w-1/2 md:hidden">
+            finalizar pedido
+        </Button>
       </div>
 
       <div className="hidden md:block">
@@ -66,17 +80,26 @@ export default function Checkout() {
 
           <div className="flex flex-col justify-between gap-8 bg-stone-100 rounded-tl-md rounded-br-md rounded-tr-[50px] rounded-bl-[50px] p-8 h-full max-w-[450px]">
             <div className="font-body overflow-auto max-h-80">
-              <Coffee />
-              <Coffee />
-              <Coffee />
-              <Coffee />
-              <Coffee />
+              {cart.map((item) => {
+                return (
+                  <Product key={item.product.id} {...item} />
+                )
+              })}
             </div>
 
             <div>
-              <Total />
+              <Total
+                productsPrice={productsPrice}
+                delivery={delivery}
+                total={productsPrice + delivery}
+              />
 
-              <Button className="bg-yellow-500 text-slate-50 font-bold py-3 w-full">
+              <Button
+                type="submit"
+                form="address"
+                disabled={!hasAnyItem()}
+                onClick={() => navigate("/success")}
+                className="bg-yellow-500 text-slate-50 font-bold py-3 w-full">
                 finalizar pedido
               </Button>
             </div>

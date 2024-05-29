@@ -1,11 +1,16 @@
-import { ShoppingCart } from "@phosphor-icons/react";
+import { CheckFat, ShoppingCart } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useCart } from "../../hooks/cart";
-import * as Control from "./../ui/control";
+import { formatPrice } from "../../utils/formatPrice";
+import { Price } from "../price";
+import { Button } from "../ui/button";
+import * as Control from "../ui/control";
 import { type ICardProps } from "./types";
 
 export default function Card({ id, title, description, price, tags, image } : ICardProps) {
-  const [quantity, setQuantity] = useState<number>(0)
+  const [quantity, setQuantity] = useState<number>(1)
+  const [animationTimer, setAnimationTimer] = useState(false)
+
   const { increaseItem } = useCart();
 
   const zeroItems = quantity < 1
@@ -15,12 +20,24 @@ export default function Card({ id, title, description, price, tags, image } : IC
   }
 
   const decrease = () => {
-    if (zeroItems) return
-    setQuantity((state) => state - 1)
+    if (!zeroItems) {
+      setQuantity((state) => state - 1)
+    }
   }
-  
+
+  const handleAddItem = () => {
+    increaseItem({id, title, description, price, tags, image}, quantity)
+    setQuantity(1)
+    setAnimationTimer(true)
+
+    setTimeout(() => {
+      setAnimationTimer(false)
+    }, 1000)
+  }
+
   return (
-    <div className="justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 text-center max-w-64">
+    <div className="justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 text-center max-w-64
+            hover:scale-[1.01] transition-transform duration-400 hover:shadow-[rgba(50,50,93,0.25)_0px_2px_5px_-1px,rgba(0,0,0,0.3)_0px_1px_3px_-1px]">
       <img 
         className="mt-[-25px] self-center w-[100px] h-[100px] sm:w-[120px] sm:h-[120px]"
         src={image}
@@ -40,19 +57,30 @@ export default function Card({ id, title, description, price, tags, image } : IC
       <span className="text-zinc-500 text-center text-xs sm:text-sm">{description}</span>
 
       <div className="flex items-center justify-around py-5">
-        <Control.Price price={price} />
+        <Price>
+          {formatPrice(price)}
+        </Price>
         <Control.Container>
           <Control.QuantityInput
             quantity={quantity}
             increaseItem={increase}
             decreaseItem={decrease} />
 
-          <Control.Button
-            disabled={zeroItems}
-            onClick={() => increaseItem({id, title, description, price, tags, image}, quantity)}
+          <Button
+            className="text-slate-50 disabled:cursor-not-allowed"
+            disabled={zeroItems || animationTimer}
+            onClick={handleAddItem}
           >
-            <ShoppingCart weight="fill" className="w-4 sm:w-6 sm:h-5 text-slate-50" />
-          </Control.Button>
+            {animationTimer ? (
+              <CheckFat
+                weight="fill"
+                className="w-4 sm:w-6 sm:h-5 animate-[pulse_1s_ease-in-out]"
+              />
+            ) : (
+              <ShoppingCart weight="fill" className="w-4 sm:w-6 sm:h-5" />
+
+            )}
+          </Button>
         </Control.Container>
       </div>
     </div>
