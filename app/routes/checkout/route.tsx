@@ -4,6 +4,7 @@ import { useNavigate } from "@remix-run/react";
 import { Product } from "../../components/product";
 import { Total } from "../../components/total";
 import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 import { useCart } from "../../hooks/cart";
 
 export default function Checkout() {
@@ -26,15 +27,17 @@ export default function Checkout() {
               <p className="text-sm">Informe o endereço onde deseja receber o pedido</p>
             </div>
           </div>
-        
-          <form className="grid gap-3 [grid-template:'zipCode_zipCode_._.''street_street_street_street''number_complement_complement_complement''neighborhood_neighborhood_city_code'/_25%_25%_25%_45px] *:p-3 *:rounded-md *:bg-stone-200/30 *:text-sm *:border *:border-stone-300">
-            <input type="text" className="[grid-area:zipCode]" placeholder="CEP" />
-            <input type="text" className="[grid-area:street]" placeholder="Rua" />
-            <input type="text" className="[grid-area:number]" placeholder="Número" />
-            <input type="text" className="[grid-area:complement]" placeholder="Complemento" />
-            <input type="text" className="[grid-area:neighborhood]" placeholder="Bairro" />
-            <input type="text" className="[grid-area:city]" placeholder="Cidade" />
-            <input type="text" className="[grid-area:code]" placeholder="UF" />
+
+          <form 
+            id="address"
+            className="grid gap-3 [grid-template:'zipCode_zipCode_._.''stt_stt_stt_stt''num_comp_comp_comp''neighborhood_neighborhood_city_code'/_25%_25%_25%_15%]">
+            <Input className="[grid-area:zipCode]" placeholder="CEP*" />
+            <Input className="[grid-area:stt]" placeholder="Rua*" />
+            <Input className="[grid-area:num]" placeholder="Número*" />
+            <Input className="[grid-area:comp]" placeholder="Complemento" isOptional />
+            <Input className="[grid-area:neighborhood]" placeholder="Bairro*" />
+            <Input className="[grid-area:city]" placeholder="Cidade*" />
+            <Input className="[grid-area:code]" placeholder="UF*" />
           </form>
         </div>
 
@@ -92,6 +95,8 @@ export default function Checkout() {
               />
 
               <Button
+                type="submit"
+                form="address"
                 disabled={!hasAnyItem()}
                 onClick={() => navigate("/success")}
                 className="bg-yellow-500 text-slate-50 font-bold py-3 w-full">
