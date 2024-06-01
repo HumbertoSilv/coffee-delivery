@@ -67,14 +67,14 @@ export default function Card({ id, title, description, price, tags, image } : IC
             decreaseItem={decrease} />
 
           <Button
-            className="text-slate-50 disabled:cursor-not-allowed"
+            className="text-slate-50"
             disabled={zeroItems || animationTimer}
             onClick={handleAddItem}
           >
             {animationTimer ? (
               <CheckFat
                 weight="fill"
-                className="w-4 sm:w-6 sm:h-5 animate-[pulse_1s_ease-in-out]"
+                className="w-4 sm:w-6 sm:h-5 animate-[pulse_0.6s_ease-in-out]"
               />
             ) : (
               <ShoppingCart weight="fill" className="w-4 sm:w-6 sm:h-5" />
