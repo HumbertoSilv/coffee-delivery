@@ -9,7 +9,7 @@ module.exports = {
   rules: {
 	  //eslint common rules
     indent: ['error', 2],
-    curly: 'error',
+    // curly: 'error',
     'prefer-const': 'error',
     'prefer-destructuring': 'error',
     'no-console': 'error',
