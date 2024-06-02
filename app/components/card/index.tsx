@@ -37,7 +37,7 @@ export default function Card({ id, title, description, price, tags, image } : IC
 
   return (
     <div className="justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 text-center max-w-64
-            hover:scale-[1.01] transition-transform duration-400 hover:shadow-[rgba(50,50,93,0.25)_0px_2px_5px_-1px,rgba(0,0,0,0.3)_0px_1px_3px_-1px]">
+            hover:scale-[1.01] transition-transform duration-400 hover:shadow-base">
       <img 
         className="mt-[-25px] self-center w-[100px] h-[100px] sm:w-[120px] sm:h-[120px]"
         src={image}

@@ -8,7 +8,7 @@ const buttonVariants = tv({
   variants: {
     variant: {
       primary: 'bg-violet-800',
-      secondary: 'bg-yellow-500 text-slate-50 ',
+      secondary: 'bg-yellow-500 text-slate-50',
       tertiary: 'bg-zinc-200 text-slate-500'
     },
   },
