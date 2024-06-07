@@ -3,7 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 const inputVariants = tv({
   base: [
-    'flex justify-between w-full items-center p-3 rounded-md bg-stone-200/30 text-sm border ',
+    'flex justify-between w-full items-center p-3 rounded-md bg-stone-200/30 text-sm border',
   ],
   variants: {
     variant: {
@@ -30,7 +30,7 @@ export function Input({ className, isOptional = false, messageError, ...props }:
         <input className="bg-transparent border-0 outline-none w-full disabled:text-zinc-900/40"  {...props} />
         {isOptional && <span className="text-stone-400 text-xs italic">Opcional</span>}
       </div>
-      {messageError && <p className="text-sm text-red-400 pl-1">{messageError}</p>}
+      {messageError && <p role="alert" className="text-sm text-red-400 pl-1">{messageError}</p>}
     </div>
   )
 }

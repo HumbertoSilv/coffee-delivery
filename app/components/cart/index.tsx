@@ -32,7 +32,7 @@ export default function Cart() {
 
   return (
     <>
-      <Button ref={btnRef} onClick={onOpen} className="bg-amber-100 relative px-2">
+      <Button ref={btnRef} onClick={onOpen} className="transition bg-amber-200 hover:bg-amber-300 relative px-2">
         <ShoppingCart className="text-amber-600" size={28} weight="fill" />
         {hasAnyItem() && (<span className="absolute top-0 right-0 text-xs font-bold text-slate-50 bg-amber-600 p-1 rounded-full w-6 translate-x-1/2 translate-y-[-50%]">
           {cart.length}
@@ -71,6 +71,7 @@ export default function Cart() {
             <Button
               disabled={!hasAnyItem()}
               onClick={handleRedirect}
+              variant="secondary"
               className="py-3 mb-2 w-full"
             >
               confirmar pedido
