@@ -1,7 +1,7 @@
 import { json, type ActionFunctionArgs } from "@remix-run/node";
 
 export async function action({ request }: ActionFunctionArgs) {
-  const formData = Object.fromEntries(await request.formData());
+  // console.log(await request.json());
 
   return json({message: "success"})
 }
