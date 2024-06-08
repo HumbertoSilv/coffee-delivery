@@ -81,8 +81,8 @@ export default function App() {
     <Document>
       <ChakraProvider>
         <CartProvider>
-          <div className="p-4 sm:p-12 max-w-[85rem] m-auto shadow-xl min-h-screen">
-            <Header />
+          <Header />
+          <div className="relative px-4 pt-20 sm:px-12 sm:pt-36 max-w-[85rem] m-auto shadow-xl min-h-screen">
             <Outlet />
           </div>
         </CartProvider>
