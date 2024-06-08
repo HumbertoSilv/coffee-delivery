@@ -3,7 +3,7 @@ import { tv, type VariantProps } from 'tailwind-variants'
 
 const buttonVariants = tv({
   base: [
-    'transition flex justify-center items-center p-1 gap-1 rounded-md text-sm font-bold uppercase',
+    'transition flex justify-center items-center p-1 gap-1 rounded-md text-sm font-bold uppercase disabled:cursor-not-allowed',
   ],
   variants: {
     variant: {

@@ -59,7 +59,7 @@ export default function Card({ id, title, description, price, tags, image } : IC
                 className="w-6 h-5 sm:w-7 sm:h-7 animate-[pulse_0.6s_ease-in-out]"
               />
             ) : (
-              <ShoppingCart weight="fill" className="w-6 h-5 sm:w-7 sm:h-7" />
+              <ShoppingCart weight="fill" className="p-[2px] w-6 h-5 sm:w-7 sm:h-7" />
 
             )}
           </Button>

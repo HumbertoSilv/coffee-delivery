@@ -235,7 +235,7 @@ export default function Checkout() {
           <h2 className="font-black text-xl font-title">Seu pedido</h2>
 
           <div className="flex flex-col justify-between gap-8 bg-stone-100 rounded-tl-md rounded-br-md rounded-tr-[50px] rounded-bl-[50px] p-8 h-full max-w-[450px]">
-            <div className="font-body overflow-auto max-h-80">
+            <div className="font-body overflow-auto max-h-72">
               {cart.map((item) => {
                 return (
                   <Product key={item.product.id} {...item} />
