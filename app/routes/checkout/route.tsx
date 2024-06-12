@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { ArrowsClockwise, CreditCard, CurrencyDollar, MapPinLine, Money, PixLogo } from "@phosphor-icons/react";
+import { ArrowsClockwise, CreditCard, CurrencyDollar, ListMagnifyingGlass, MapPinLine, Money, PixLogo } from "@phosphor-icons/react";
 import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
 import { Form, useActionData, useNavigation, useSubmit } from "@remix-run/react";
 import { useState } from "react";
@@ -235,7 +235,12 @@ export default function Checkout() {
           <h2 className="font-black text-xl font-title">Seu pedido</h2>
 
           <div className="flex flex-col justify-between gap-8 bg-stone-100 rounded-tl-md rounded-br-md rounded-tr-[50px] rounded-bl-[50px] p-8 h-full max-w-[450px]">
-            <div className="font-body overflow-auto max-h-72">
+            <div className="flex flex-col items-center font-body overflow-auto max-h-72">
+              {!hasAnyItem() &&
+              (<div className="pt-10">
+                <ListMagnifyingGlass size={152} color="#d4cece" weight="bold" />
+                <span className="text-zinc-500 font-semibold">Seu carrinho está vazio</span>
+              </div>)}
               {cart.map((item) => {
                 return (
                   <Product key={item.product.id} {...item} />

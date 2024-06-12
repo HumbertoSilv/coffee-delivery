@@ -8,7 +8,7 @@ import {
   DrawerOverlay,
   useDisclosure
 } from '@chakra-ui/react'
-import { ShoppingCart } from '@phosphor-icons/react'
+import { ListMagnifyingGlass, ShoppingCart } from '@phosphor-icons/react'
 import { useNavigate } from '@remix-run/react'
 import { useRef } from 'react'
 import { useCart } from '../../hooks/cart'
@@ -53,7 +53,12 @@ export default function Cart() {
             Cafés selecionados
           </DrawerHeader>
 
-          <DrawerBody className="bg-gray-100 font-body">
+          <DrawerBody className="flex flex-col bg-gray-100 font-body">
+            {!hasAnyItem() &&
+              (<div className="absolute top-[calc(40%_-_88px)] right-[calc(50%_-_84px)]">
+                <ListMagnifyingGlass size={152} color="#d4cece" weight="bold" />
+                <span className="text-zinc-500 font-semibold">Seu carrinho está vazio</span>
+              </div>)}
             {cart.map((item) => {
               return (
                 <Product key={item.product.id} {...item} />
