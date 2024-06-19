@@ -4,5 +4,5 @@ export interface ICardProps {
   description: string
   tags: Array<string>,
   price: number,
-  image: string
+  imageUrl: string
 }

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { ArrowsClockwise, CreditCard, CurrencyDollar, ListMagnifyingGlass, MapPinLine, Money, PixLogo } from "@phosphor-icons/react";
 import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
-import { Form, useActionData, useNavigation, useSubmit } from "@remix-run/react";
+import { Form, useActionData, useFetcher, useNavigation } from "@remix-run/react";
 import { useState } from "react";
 import { z } from "zod";
 import { Product } from "../../components/product";
@@ -21,14 +21,8 @@ interface ErrorMessage {
 
 const checkoutSchema = z.object({
   products: z.array(z.object({
-    product: z.object({
-      id: z.string(),
-      title: z.string(),
-      description: z.string(),
-      tags: z.array(z.string()),
-      price: z.number(),
-      image: z.string(),
-    }),
+    id: z.string(),
+    price: z.number(),
     quantity: z.number(),
   })),
   paymentMethod: z.enum(["cash", "pix", "card"], {
@@ -50,7 +44,7 @@ const checkoutSchema = z.object({
 
 export default function Checkout() {
   const actionData = useActionData<typeof action>();
-  const submit = useSubmit();
+  const { submit } = useFetcher()
   const { state } = useNavigation();
   const { cart, totalProductsPrice, hasAnyItem } = useCart();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('')
@@ -63,7 +57,9 @@ export default function Checkout() {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget)
-    data.append("products", JSON.stringify(cart))
+    const products = cart.map(({ product, quantity}) => ({ id: product.id, price: product.price, quantity}))
+
+    data.append("products", JSON.stringify(products))
     data.append("delivery", String(delivery))
     
     submit(data, { method: "post" });

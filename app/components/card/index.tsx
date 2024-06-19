@@ -1,32 +1,44 @@
 import { CheckFat, ShoppingCart } from "@phosphor-icons/react";
+import { useFetcher } from "@remix-run/react";
 import { useState } from "react";
-import { useCart } from "../../hooks/cart";
 import { formatPrice } from "../../utils/formatPrice";
 import { Price } from "../price";
 import { Button } from "../ui/button";
 import * as Control from "../ui/control";
 import { type ICardProps } from "./types";
 
-export default function Card({ id, title, description, price, tags, image } : ICardProps) {
+export default function Card({ id, title, description, price, tags, imageUrl } : ICardProps) {
   const [animationTimer, setAnimationTimer] = useState(false)
-  const { increaseItem } = useCart();
+  const { submit } = useFetcher()
 
   const handleAddItem = () => {
-    increaseItem({id, title, description, price, tags, image}, 1)
-    setAnimationTimer(true)
+    submit(
+      { product: JSON.stringify({
+        id,
+        title,
+        description,
+        price,
+        tags,
+        imageUrl
+      }),
+      _action: "add"
+      },
+      { method: "POST", action: "/api/cart"}
+    )
 
+    setAnimationTimer(true)
     setTimeout(() => {
       setAnimationTimer(false)
     }, 1000)
   }
 
   return (
-    <div className="justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 sm:px-7 text-center max-w-64
-            hover:scale-[1.01] transition-transform duration-400 hover:shadow-base">
+    // eslint-disable-next-line max-len
+    <div className="justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 sm:px-7 text-center max-w-64 hover:scale-[1.01] transition-transform duration-400 hover:shadow-base">
       <div className="flex flex-col">
         <img 
           className="mt-[-25px] self-center w-[100px] h-[100px] sm:w-[120px] sm:h-[120px]"
-          src={image}
+          src={imageUrl}
           alt={title}
         />
 

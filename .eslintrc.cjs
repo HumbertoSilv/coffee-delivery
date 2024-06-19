@@ -12,7 +12,7 @@ module.exports = {
     // curly: 'error',
     'prefer-const': 'error',
     'prefer-destructuring': 'error',
-    'no-console': 'error',
+    'no-console': 'warn',
     'no-nested-ternary': 'error',
     'prefer-template': 'error',
     'no-debugger': 'error',
