@@ -1,10 +1,11 @@
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  json,
 } from '@remix-run/react';
 import stylesheet from "~/tailwind.css?url";
 
@@ -15,7 +16,8 @@ import Header from './components/header';
 
 import { useContext, useEffect } from "react";
 import { ClientStyleContext, ServerStyleContext } from './context';
-import { CartProvider } from "./hooks/cart";
+import { CartProvider, type CartProduct } from "./hooks/cart";
+import { cartSession } from "./utils/cart.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -81,8 +83,8 @@ export default function App() {
     <Document>
       <ChakraProvider>
         <CartProvider>
-          <div className="p-4 sm:p-12 max-w-7xl m-auto shadow-xl min-h-screen">
-            <Header />
+          <Header />
+          <div className="relative px-4 pt-20 sm:px-12 sm:pt-36 max-w-[85rem] m-auto shadow-xl min-h-screen">
             <Outlet />
           </div>
         </CartProvider>
@@ -90,4 +92,11 @@ export default function App() {
     </Document>
 
   )
+}
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const session = await cartSession.getSession(request.headers.get("Cookie"))
+  const cart = session.get("cart") as CartProduct[] || [] 
+
+  return json({ cart })
 }

@@ -8,7 +8,7 @@ import {
   DrawerOverlay,
   useDisclosure
 } from '@chakra-ui/react'
-import { ShoppingCart } from '@phosphor-icons/react'
+import { ListMagnifyingGlass, ShoppingCart } from '@phosphor-icons/react'
 import { useNavigate } from '@remix-run/react'
 import { useRef } from 'react'
 import { useCart } from '../../hooks/cart'
@@ -32,7 +32,7 @@ export default function Cart() {
 
   return (
     <>
-      <Button ref={btnRef} onClick={onOpen} variant="secondary" className="relative px-2">
+      <Button ref={btnRef} onClick={onOpen} className="transition bg-amber-200 hover:bg-amber-300 relative px-2">
         <ShoppingCart className="text-amber-600" size={28} weight="fill" />
         {hasAnyItem() && (<span className="absolute top-0 right-0 text-xs font-bold text-slate-50 bg-amber-600 p-1 rounded-full w-6 translate-x-1/2 translate-y-[-50%]">
           {cart.length}
@@ -53,7 +53,12 @@ export default function Cart() {
             Cafés selecionados
           </DrawerHeader>
 
-          <DrawerBody className="bg-gray-100 font-body">
+          <DrawerBody className="flex flex-col bg-gray-100 font-body">
+            {!hasAnyItem() &&
+              (<div className="absolute top-[calc(40%_-_88px)] right-[calc(50%_-_84px)]">
+                <ListMagnifyingGlass size={152} color="#d4cece" weight="bold" />
+                <span className="text-zinc-500 font-semibold">Seu carrinho está vazio</span>
+              </div>)}
             {cart.map((item) => {
               return (
                 <Product key={item.product.id} {...item} />
@@ -71,7 +76,8 @@ export default function Cart() {
             <Button
               disabled={!hasAnyItem()}
               onClick={handleRedirect}
-              className="bg-yellow-500 text-slate-50 font-bold py-3 mb-2 w-full"
+              variant="secondary"
+              className="py-3 mb-2 w-full"
             >
               confirmar pedido
             </Button>

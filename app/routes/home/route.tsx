@@ -75,7 +75,7 @@ export default function Home() {
             <Await resolve={products}>
               {products.map(product => {
                 return (
-                  <Card key={product.id} {...product} />
+                  <Card key={product.title} {...product} />
                 )
               })}
             </Await>

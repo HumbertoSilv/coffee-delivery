@@ -1,36 +1,47 @@
-# Welcome to Remix + Vite!
+# Bem vindo ao Coffee Delivery!
+Um pequeno projeto que simula o e-commerce de uma cafeteria.
 
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
+## Features
+ - Carrinho com pedidos
+ - ...
 
-## Development
+## Tech
+Algumas das principais tecnologias utilizadas neste projeto
 
-Run the Vite dev server:
+- Remix + Vite
+- Tailwindcss
+
+## Installation
+Obrigatório  [Node.js](https://nodejs.org/) v16+
+
+Faça a instalação das dependências:
+
+```shellscript
+npm install
+```
+
+Execute o servidor:
 
 ```shellscript
 npm run dev
 ```
 
 ## Deployment
-
-First, build your app for production:
+Primeiro, faça o build de seu aplicativo para produção:
 
 ```sh
 npm run build
 ```
 
-Then run the app in production mode:
+Em seguida, execute o aplicativo em modo de produção:
 
 ```sh
 npm start
 ```
 
-Now you'll need to pick a host to deploy it to.
+Agora você precisará escolher um host para implantá-lo.
 
-### DIY
 
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
 
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
+## TODO
+[X] Busca de cafés por tag
