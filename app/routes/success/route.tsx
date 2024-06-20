@@ -1,9 +1,13 @@
 /* eslint-disable max-len */
 import { CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { checkoutSession } from "../../utils/checkout.server";
 import { formatPaymentMethod } from "../../utils/formatPaymentMethod";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Success | Coffee Delivery" }]
+}
 
 interface CheckoutInfo {
   paymentMethod: string,

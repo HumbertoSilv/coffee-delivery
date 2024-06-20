@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { ArrowsClockwise, CreditCard, CurrencyDollar, ListMagnifyingGlass, MapPinLine, Money, PixLogo } from "@phosphor-icons/react";
-import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
+import { json, redirect, type ActionFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { Form, useActionData, useFetcher, useNavigation } from "@remix-run/react";
 import { useState } from "react";
 import { z } from "zod";
@@ -15,6 +15,10 @@ import { cartSession } from "../../utils/cart.server";
 import { checkoutSession } from "../../utils/checkout.server";
 import { paymentMethod } from "../../utils/paymentMethodEnum";
 import { states } from "../../utils/statesEnum";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Checkout | Coffee Delivery" }]
+}
 
 interface ErrorMessage {
   [key: string]: string;

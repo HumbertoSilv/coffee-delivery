@@ -1,5 +1,5 @@
 import { Coffee, Package, ShoppingCart, Timer } from "@phosphor-icons/react";
-import { defer } from "@remix-run/node";
+import { defer, type MetaFunction } from "@remix-run/node";
 import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import Card from "../../components/card";
@@ -7,6 +7,9 @@ import { ListSkeleton } from "../../components/skeleton";
 import { type Product } from "../../hooks/cart";
 import { api } from "../../utils/api";
 
+export const meta: MetaFunction = () => {
+  return [{ title: "Home | Coffee Delivery" }]
+}
 
 export async function loader() {
   const response = await api('/products')  
