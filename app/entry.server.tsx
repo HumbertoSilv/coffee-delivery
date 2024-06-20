@@ -17,8 +17,12 @@ import createEmotionServer from '@emotion/server/create-instance';
 
 import { ServerStyleContext } from './context';
 import createEmotionCache from './createEmotionCache';
+import { getEnv, init } from "./utils/env.server";
 
 const ABORT_DELAY = 5_000;
+
+init()
+global.ENV = getEnv()
 
 export default function handleRequest(
   request: Request,
