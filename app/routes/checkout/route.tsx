@@ -11,7 +11,8 @@ import { Input } from "../../components/ui/input";
 import { Radio } from "../../components/ui/radio";
 import { Select } from "../../components/ui/select";
 import { useCart } from "../../hooks/cart";
-import { api } from "../../utils/api";
+import { cartSession } from "../../utils/cart.server";
+import { checkoutSession } from "../../utils/checkout.server";
 import { paymentMethod } from "../../utils/paymentMethodEnum";
 import { states } from "../../utils/statesEnum";
 
@@ -269,6 +270,8 @@ export default function Checkout() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
+  const checkoutStorage = await checkoutSession.getSession(request.headers.get("Cookie"))
+  const cartStorage = await cartSession.getSession(request.headers.get("Cookie"))
   const formData = await request.formData()
 
   const payloadParsed = {
@@ -296,10 +299,14 @@ export async function action({ request }: ActionFunctionArgs) {
     return json({ success: false, message: errorMessage })
   }
 
-  await api('/checkout', {
-    method: "POST",
-    body: JSON.stringify(data),
-  })  
+  const headers = new Headers()
+  checkoutStorage.set("checkout", {
+    paymentMethod: data.paymentMethod,
+    address: data.address
+  })
 
-  return redirect("/success")
+  headers.append('Set-Cookie', await cartSession.destroySession(cartStorage));
+  headers.append('Set-Cookie', await checkoutSession.commitSession(checkoutStorage));
+  
+  return redirect("/success", { headers })
 }

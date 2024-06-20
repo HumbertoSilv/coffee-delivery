@@ -17,7 +17,7 @@ import Header from './components/header';
 import { useContext, useEffect } from "react";
 import { ClientStyleContext, ServerStyleContext } from './context';
 import { CartProvider, type CartProduct } from "./hooks/cart";
-import { getSession } from "./utils/session.server";
+import { cartSession } from "./utils/cart.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -95,8 +95,8 @@ export default function App() {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const session = await getSession(request.headers.get("Cookie"))
-  const cart = session.get("cart") as CartProduct[] || []
+  const session = await cartSession.getSession(request.headers.get("Cookie"))
+  const cart = session.get("cart") as CartProduct[] || [] 
 
   return json({ cart })
 }

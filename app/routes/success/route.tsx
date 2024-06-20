@@ -1,6 +1,33 @@
+/* eslint-disable max-len */
 import { CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { checkoutSession } from "../../utils/checkout.server";
+import { formatPaymentMethod } from "../../utils/formatPaymentMethod";
+
+interface CheckoutInfo {
+  paymentMethod: string,
+  address: {
+    zipCode: string,
+    street: string,
+    number: string,
+    complement: string,
+    neighborhood: string,
+    city: string,
+    state: string
+  }
+}
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const session = await checkoutSession.getSession(request.headers.get("Cookie"))
+  const checkoutInfo = session.get("checkout") as CheckoutInfo
+  
+  return json({ checkoutInfo })
+}
 
 export default function Success() {
+  const { checkoutInfo: { address, paymentMethod} } = useLoaderData<typeof loader>()
+
   return (
     <div className="py-16">
       <h2 className="font-extrabold text-titleL font-title text-amber-600">Uhu! Pedido confirmado</h2>
@@ -12,8 +39,8 @@ export default function Success() {
             <div className="flex items-center gap-3">
               <MapPin size={35} weight="fill" className="bg-violet-600 text-white p-2 rounded-full" />
               <div>
-                <p>Entrega em <strong>R. João Daniel Martinelli, 102</strong></p>
-                <p>Farrapos - Porto Alegre, RS</p>
+                <p>Entrega em <strong>{address.street}, {address.number}</strong></p>
+                <p>{address.neighborhood} - {address.city}, {address.state}</p>
               </div>
             </div>
 
@@ -29,7 +56,7 @@ export default function Success() {
               <CurrencyDollar size={35} className="bg-amber-600 text-white p-2 rounded-full" />
               <div>
                 <p>Pagamento na entrega</p>
-                <strong>Cartão de Crédito</strong>
+                <strong>{formatPaymentMethod(paymentMethod)}</strong>
               </div>
             </div>
           </div>
