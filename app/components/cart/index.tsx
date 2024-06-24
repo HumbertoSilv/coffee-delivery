@@ -26,7 +26,7 @@ export default function Cart() {
   const delivery = productsPrice * 0.1 // random value
 
   const handleRedirect = () => {
-    navigate("/checkout")
+    navigate(hasAnyItem() ? "/checkout" : "/home")
     onClose()
   }
 
@@ -74,12 +74,11 @@ export default function Cart() {
             />
 
             <Button
-              disabled={!hasAnyItem()}
               onClick={handleRedirect}
               variant="secondary"
               className="py-3 mb-2 w-full"
             >
-              confirmar pedido
+              {hasAnyItem() ? "confirmar pedido" : "Adicionar item" }
             </Button>
           </DrawerFooter>
         </DrawerContent>
