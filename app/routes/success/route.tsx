@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
-import { CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
+import { ArrowLeft, CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
 import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { checkoutSession } from "../../utils/checkout.server";
 import { formatPaymentMethod } from "../../utils/formatPaymentMethod";
 
@@ -68,6 +68,10 @@ export default function Success() {
 
         <img className="justify-self-center h-full" src="/Illustration.svg" alt="Pedido concluído" />
       </div>
+      <Link to="/home" className="flex items-center gap-2 pt-6 text-xl font-extrabold font-title text-amber-600">
+        <ArrowLeft size={32} />
+          Pedir novamente
+      </Link>
     </div>
   );
 }
