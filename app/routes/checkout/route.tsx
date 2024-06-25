@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 import { ArrowLeft, ArrowsClockwise, CreditCard, CurrencyDollar, ListMagnifyingGlass, MapPinLine, Money, PixLogo } from "@phosphor-icons/react";
-import { json, redirect, type ActionFunctionArgs, type MetaFunction } from "@remix-run/node";
-import { Form, Link, useActionData, useFetcher, useNavigation } from "@remix-run/react";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, Link, useFetcher, useLoaderData, useNavigation } from "@remix-run/react";
 import { useState } from "react";
 import { z } from "zod";
 import { Product } from "../../components/product";
@@ -18,10 +19,6 @@ import { states } from "../../utils/statesEnum";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Checkout | Coffee Delivery" }]
-}
-
-interface ErrorMessage {
-  [key: string]: string;
 }
 
 const checkoutSchema = z.object({
@@ -47,8 +44,23 @@ const checkoutSchema = z.object({
   }),
 })
 
+export const loader = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  const session = await checkoutSession.getSession(
+    request.headers.get("Cookie")
+  )
+  const message = session.get("error")
+
+  return json({ ...message }, {
+    headers: {
+      "Set-Cookie": await checkoutSession.commitSession(session),
+    },
+  })
+}
+
 export default function Checkout() {
-  const actionData = useActionData<typeof action>();
+  const error = useLoaderData<typeof loader>();
   const { submit } = useFetcher()
   const { state } = useNavigation();
   const { cart, totalProductsPrice, hasAnyItem } = useCart();
@@ -103,7 +115,7 @@ export default function Checkout() {
                 name="zipCode"
                 className="[grid-area:zipCode]"
                 placeholder="CEP*"
-                messageError={actionData?.message?.zipCode}
+                messageError={error?.zipCode}
               />
               <Input
                 required
@@ -111,7 +123,7 @@ export default function Checkout() {
                 name="street"
                 className="[grid-area:stt]"
                 placeholder="Rua*"
-                messageError={actionData?.message?.street}
+                messageError={error?.street}
               />
               <Input
                 required
@@ -119,14 +131,14 @@ export default function Checkout() {
                 name="number"
                 className="[grid-area:num]"
                 placeholder="Número*"
-                messageError={actionData?.message?.number}
+                messageError={error?.number}
               />
               <Input
                 disabled={isSubmitting}
                 name="complement"
                 className="[grid-area:comp]"
                 placeholder="Complemento"
-                messageError={actionData?.message?.complement}
+                messageError={error?.complement}
                 isOptional />
               <Input
                 required
@@ -134,7 +146,7 @@ export default function Checkout() {
                 name="neighborhood"
                 className="[grid-area:neighborhood]"
                 placeholder="Bairro*"
-                messageError={actionData?.message?.neighborhood}
+                messageError={error?.neighborhood}
               />
               <Input
                 required
@@ -142,7 +154,7 @@ export default function Checkout() {
                 name="city"
                 className="[grid-area:city]"
                 placeholder="Cidade*"
-                messageError={actionData?.message?.city}
+                messageError={error?.city}
               />
               <Select
                 required
@@ -217,9 +229,9 @@ export default function Checkout() {
                 <span>Dinheiro</span>
               </Radio>
             </div>
-            {actionData?.message?.paymentMethod && (
+            {error?.paymentMethod && (
               <span className="text-sm text-red-400 p-1" role="alert">
-                {actionData?.message?.paymentMethod}
+                {error?.paymentMethod}
               </span>
             )}
           </div>
@@ -281,6 +293,7 @@ export default function Checkout() {
 export async function action({ request }: ActionFunctionArgs) {
   const checkoutStorage = await checkoutSession.getSession(request.headers.get("Cookie"))
   const cartStorage = await cartSession.getSession(request.headers.get("Cookie"))
+  const headers = new Headers()
   const formData = await request.formData()
 
   const payloadParsed = {
@@ -301,14 +314,19 @@ export async function action({ request }: ActionFunctionArgs) {
   const { data, error } = checkoutSchema.safeParse(payloadParsed)
 
   if (error) {
-    const errorMessage: ErrorMessage = error.issues.reduce((acc, issue) => {
+    const errorMessage = error.issues.reduce((acc, issue) => {
       return Object.assign(acc, {[issue.path[issue.path.length -1]]: issue.message})
     },{})
     
-    return json({ success: false, message: errorMessage })
+    checkoutStorage.flash("error", errorMessage)
+
+    return json({},{
+      headers: {
+        "Set-Cookie": await checkoutSession.commitSession(checkoutStorage)
+      }
+    })
   }
 
-  const headers = new Headers()
   checkoutStorage.set("checkout", {
     paymentMethod: data.paymentMethod,
     address: data.address
