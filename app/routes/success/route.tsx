@@ -1,32 +1,23 @@
 /* eslint-disable max-len */
-import { CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { ArrowLeft, CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
+import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import { checkoutSession } from "../../utils/checkout.server";
 import { formatPaymentMethod } from "../../utils/formatPaymentMethod";
 
-interface CheckoutInfo {
-  paymentMethod: string,
-  address: {
-    zipCode: string,
-    street: string,
-    number: string,
-    complement: string,
-    neighborhood: string,
-    city: string,
-    state: string
-  }
+export const meta: MetaFunction = () => {
+  return [{ title: "Success | Coffee Delivery" }]
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const session = await checkoutSession.getSession(request.headers.get("Cookie"))
-  const checkoutInfo = session.get("checkout") as CheckoutInfo
+  const checkout = session.get("checkout")
   
-  return json({ checkoutInfo })
+  return json({ ...checkout })
 }
 
 export default function Success() {
-  const { checkoutInfo: { address, paymentMethod} } = useLoaderData<typeof loader>()
+  const { address, paymentMethod } = useLoaderData<typeof loader>()
 
   return (
     <div className="py-16">
@@ -39,8 +30,8 @@ export default function Success() {
             <div className="flex items-center gap-3">
               <MapPin size={35} weight="fill" className="bg-violet-600 text-white p-2 rounded-full" />
               <div>
-                <p>Entrega em <strong>{address.street}, {address.number}</strong></p>
-                <p>{address.neighborhood} - {address.city}, {address.state}</p>
+                <p>Entrega em <strong>{address?.street}, {address?.number}</strong></p>
+                <p>{address?.neighborhood} - {address?.city}, {address?.state}</p>
               </div>
             </div>
 
@@ -56,7 +47,8 @@ export default function Success() {
               <CurrencyDollar size={35} className="bg-amber-600 text-white p-2 rounded-full" />
               <div>
                 <p>Pagamento na entrega</p>
-                <strong>{formatPaymentMethod(paymentMethod)}</strong>
+                {/* TODO: melhorar isso -> paymentMethod || ""*/}
+                <strong>{formatPaymentMethod(paymentMethod || "")}</strong>
               </div>
             </div>
           </div>
@@ -64,6 +56,10 @@ export default function Success() {
 
         <img className="justify-self-center h-full" src="/Illustration.svg" alt="Pedido concluído" />
       </div>
+      <Link to="/home" className="flex items-center gap-2 pt-6 text-xl font-extrabold font-title text-amber-600">
+        <ArrowLeft size={32} />
+          Pedir novamente
+      </Link>
     </div>
   );
 }
