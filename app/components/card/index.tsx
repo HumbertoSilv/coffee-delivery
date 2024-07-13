@@ -7,23 +7,24 @@ import { Button } from "../ui/button";
 import * as Control from "../ui/control";
 import { type ICardProps } from "./types";
 
-export default function Card({ id, title, description, price, tags, imageUrl } : ICardProps) {
+export default function Card({ id, title, description, price, tags, imageUrl }: ICardProps) {
   const [animationTimer, setAnimationTimer] = useState(false)
   const { submit } = useFetcher()
 
   const handleAddItem = () => {
     submit(
-      { product: JSON.stringify({
-        id,
-        title,
-        description,
-        price,
-        tags,
-        imageUrl
-      }),
-      _action: "add"
+      {
+        product: JSON.stringify({
+          id,
+          title,
+          description,
+          price,
+          tags,
+          imageUrl
+        }),
+        _action: "add"
       },
-      { method: "POST", action: "/api/cart"}
+      { method: "POST", action: "/api/cart" }
     )
 
     setAnimationTimer(true)
@@ -34,9 +35,9 @@ export default function Card({ id, title, description, price, tags, imageUrl } :
 
   return (
     // eslint-disable-next-line max-len
-    <div className="justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 sm:px-7 text-center max-w-64 hover:scale-[1.01] transition-transform duration-400 hover:shadow-base">
+    <div className="sm:min-w-64 min-w-40 keen-slider__slide justify-between bg-gray-100 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl flex flex-col mt-6 px-3 sm:px-7 text-center max-w-64 hover:scale-[1.01] transition-transform duration-400 hover:shadow-base">
       <div className="flex flex-col">
-        <img 
+        <img
           className="mt-[-25px] self-center w-[100px] h-[100px] sm:w-[120px] sm:h-[120px]"
           src={imageUrl}
           alt={title}
