@@ -1,9 +1,9 @@
 import { Coffee, Package, ShoppingCart, Timer } from "@phosphor-icons/react";
-import { defer, type MetaFunction } from "@remix-run/node";
-import { Await, useLoaderData } from "@remix-run/react";
-import { Suspense } from "react";
-import Card from "../../components/card";
-import { ListSkeleton } from "../../components/skeleton";
+import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
+import { defer, json } from "@remix-run/node";
+import { Outlet, useActionData, useLoaderData, useSubmit } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import Carousel from "../../components/ProductsCarousel";
 import { type Product } from "../../hooks/cart";
 import { api } from "../../utils/api";
 
@@ -12,14 +12,32 @@ export const meta: MetaFunction = () => {
 }
 
 export async function loader() {
-  const response = await api('/products')  
+  const response = await api('/products?tag=tradicional')
   const data: Array<Product> = await response.json()
 
   return defer({ products: data })
 }
 
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData()
+
+  const response = await api(`/products?tag=${formData.get("tag")}`)
+  const data: Array<Product> = await response.json()
+
+  return json({ filteredProducts: data })
+}
+
 export default function Home() {
   const { products } = useLoaderData<typeof loader>()
+  const data = useActionData<typeof action>()
+  const submit = useSubmit()
+
+  const [selectedTag, setFilter] = useState<string>("tradicional")
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products)
+
+  useEffect(() => {
+    if (data) setFilteredProducts(data.filteredProducts)
+  }, [data])
 
   return (
     <div>
@@ -71,9 +89,32 @@ export default function Home() {
       </div>
 
       <section >
-        <h2 className="font-black text-3xl font-title">Nossos cafés</h2>
-        
-        <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-evenly py-9 gap-3">
+        <h2 className="font-black text-3xl font-title my-2">Sugeridos</h2>
+
+        {["tradicional", "com leite", "gelado", "especial", "alcoólico"].map(tag => {
+          return (
+            <button
+              key={tag}
+              onClick={() => {
+                setFilter(tag)
+                submit({ tag }, { method: "post" });
+              }}
+              disabled={selectedTag === tag}
+              className="p-2 rounded-full bg-amber-100 hover:bg-amber-200 text-yellow-600 uppercase font-extrabold text-xs transition duration-200 disabled:bg-amber-200"
+            >
+              {tag}
+            </button>
+          )
+        })}
+
+        <Carousel products={filteredProducts} />
+      </section>
+
+
+      {/* <section >
+        <h2 className="pt-4 font-black text-3xl font-title">Nossos cafés</h2>
+
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-evenly py-7 gap-3">
           <Suspense fallback={<ListSkeleton />}>
             <Await resolve={products}>
               {products.map(product => {
@@ -84,7 +125,10 @@ export default function Home() {
             </Await>
           </Suspense>
         </div>
-      </section>
+      </section> */}
+
+      <Outlet />
     </div>
   )
 }
+
