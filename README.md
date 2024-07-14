@@ -44,4 +44,7 @@ Agora você precisará escolher um host para implantá-lo.
 
 
 ## TODO
-[X] Busca de cafés por tag
+- [ ] Criar testes
+- [ ] Tema dark
+- [ ] Adicionar rodapé
+- [ ] Deploy
